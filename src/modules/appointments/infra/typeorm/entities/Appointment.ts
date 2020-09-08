@@ -21,7 +21,6 @@ class Appointment {
   @JoinColumn({ name: 'provider_id' })
   provider: User;
 
-
   @Column()
   user_id: string;
 

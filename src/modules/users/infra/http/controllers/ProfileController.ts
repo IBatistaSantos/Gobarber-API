@@ -5,16 +5,17 @@ import UpdateProfileService from '@modules/users/services/UpdateProfileService';
 import ShowProfileService from '@modules/users/services/ShowProfileService';
 
 export default class UsersController {
-  public async show(request:  Request, response: Response): Promise<Response> {
-    const user_id = request.user.id
+  public async show(request: Request, response: Response): Promise<Response> {
+    const user_id = request.user.id;
 
     const showProfile = container.resolve(ShowProfileService);
     const user = await showProfile.execute({ user_id });
 
-    delete user.password
+    delete user.password;
 
-    return response.json(user)
+    return response.json(user);
   }
+
   public async update(request: Request, response: Response): Promise<Response> {
     const { name, email, old_password, password } = request.body;
     const user_id = request.user.id;
@@ -25,7 +26,7 @@ export default class UsersController {
       name,
       email,
       old_password,
-      password
+      password,
     });
 
     delete user.password;
