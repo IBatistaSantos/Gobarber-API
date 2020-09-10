@@ -13,8 +13,12 @@ describe('CreateAppointment', () => {
   });
 
   it('should be able to create new appointment', async () => {
+    jest.spyOn(Date, 'now').mockImplementation(() => {
+      return new Date(2020, 4, 10, 12).getTime();
+    });
+
     const appointment = await createAppointment.execute({
-      date: new Date(2020, 8, 4, 15),
+      date: new Date(2020, 4, 10, 13),
       user_id: 'user',
       provider_id: 'provider_id',
     });
@@ -32,7 +36,7 @@ describe('CreateAppointment', () => {
       provider_id: 'provider_id',
     });
 
-    expect(
+    await expect(
       createAppointment.execute({
         date: appointmentDate,
         user_id: 'user',

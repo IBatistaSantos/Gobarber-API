@@ -1,4 +1,4 @@
-import { startOfDay, isBefore, getHours } from 'date-fns';
+import { startOfHour, isBefore, getHours } from 'date-fns';
 import AppError from '@shared/errors/AppError';
 
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
@@ -23,7 +23,7 @@ class CreateAppointmentService {
     date,
     user_id,
   }: IRequest): Promise<Appointment> {
-    const appointmentDate = startOfDay(date);
+    const appointmentDate = startOfHour(date);
 
     if (isBefore(appointmentDate, Date.now())) {
       throw new AppError('You can´t create an appointment on a past date.');
