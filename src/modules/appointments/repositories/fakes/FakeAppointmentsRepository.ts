@@ -3,23 +3,31 @@ import ICreateAppointmentDTO from '@modules/appointments/dtos/CreateAppointmentD
 
 import { uuid } from 'uuidv4';
 import { isEqual, getMonth, getYear, getDate } from 'date-fns';
-import Appointment from '../../infra/typeorm/entities/Appointment';
 import IFindAllInMonthFromProviderDTO from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
 import IFindAllInDayFromProviderDTO from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO';
+import Appointment from '../../infra/typeorm/entities/Appointment';
 
 class FakeAppointmentRepository implements IAppointmentsRepository {
   private appointments: Appointment[] = [];
 
-  public async findByDate(date: Date): Promise<Appointment | undefined> {
-    const findAppointment = this.appointments.find(appointment =>
-      isEqual(appointment.date, date),
+  public async findByDate(
+    date: Date,
+    provider_id: string,
+  ): Promise<Appointment | undefined> {
+    const findAppointment = this.appointments.find(
+      appointment =>
+        isEqual(appointment.date, date) &&
+        appointment.provider_id === provider_id,
     );
 
     return findAppointment;
   }
 
-  public async findAllInMonthFromProvider({provider_id, month, year}:
-    IFindAllInMonthFromProviderDTO): Promise<Appointment[]> {
+  public async findAllInMonthFromProvider({
+    provider_id,
+    month,
+    year,
+  }: IFindAllInMonthFromProviderDTO): Promise<Appointment[]> {
     const findAppointment = this.appointments.filter(appointment => {
       return (
         appointment.provider_id === provider_id &&
@@ -31,8 +39,12 @@ class FakeAppointmentRepository implements IAppointmentsRepository {
     return findAppointment;
   }
 
-  public async findAllInDayFromProvider({provider_id, month, year, day}:
-    IFindAllInDayFromProviderDTO): Promise<Appointment[]> {
+  public async findAllInDayFromProvider({
+    provider_id,
+    month,
+    year,
+    day,
+  }: IFindAllInDayFromProviderDTO): Promise<Appointment[]> {
     const findAppointment = this.appointments.filter(appointment => {
       return (
         appointment.provider_id === provider_id &&
@@ -56,7 +68,7 @@ class FakeAppointmentRepository implements IAppointmentsRepository {
       id: uuid(),
       date,
       provider_id,
-      user_id
+      user_id,
     });
 
     this.appointments.push(appointment);
